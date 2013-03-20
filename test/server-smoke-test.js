@@ -1,81 +1,82 @@
 "use strict";
+var beschreibe = describe, es = it, vorJedem = beforeEach, nachJedem = afterEach;
 var should = require('chai').should();
-var request = require('request');
+var anfrage = require('request');
 var proxyquire =  require('proxyquire');
 
 var port = 17125;
 
 var sympaClientStub = {};
 var gruppenAnwendungStub = proxyquire('../lib/gruppen', {'../gruppenverwaltung/swkSympaClient': sympaClientStub});
-var app = proxyquire('../app.js', {'./lib/gruppen': gruppenAnwendungStub});
+var anwendung = proxyquire('../app.js', {'./lib/gruppen': gruppenAnwendungStub});
 
 var basis_uri = "http://localhost:" + port;
 var veranstaltungen_uri = basis_uri + '/events';
 
-describe('SWK Plattform Server', function () {
-  beforeEach(function (done) {
-    app.start(port, done);
+beschreibe('SWK Plattform Server', function () {
+  vorJedem(function (fertig) {
+    anwendung.start(port, fertig);
   });
 
-  afterEach(function (done) {
-    app.stop(done);
+  nachJedem(function (fertig) {
+    anwendung.stop(fertig);
   });
 
-  it('responds on a GET for the home page', function (done) {
-    request({uri: basis_uri}, function (req, resp) {
+  es('antwortet auf GET für die Startseite', function (fertig) {
+    anfrage({uri: basis_uri}, function (req, resp) {
       should.exist(resp);
       resp.statusCode.should.equal(200);
-      done();
+      fertig();
     });
   });
 
-  it('responds with HTML on a GET for the home page', function (done) {
-    request({uri: basis_uri}, function (req, resp) {
+  es('antwortet mit HTML auf GET für die Startseite', function (fertig) {
+    anfrage({uri: basis_uri}, function (req, resp) {
       resp.headers['content-type'].should.contain('text/html');
-      done();
+      fertig();
     });
   });
 
-  it('shows "Softwerkskammer" on the home page', function (done) {
-    request({uri: basis_uri}, function (req, resp) {
+  es('enthält "Softwerkskammer" auf der Startseite', function (fertig) {
+    anfrage({uri: basis_uri}, function (req, resp) {
       resp.body.should.contain('Softwerkskammer');
-      done();
+      fertig();
     });
   });
 
-  it('shows "Upcoming events" on the event page', function (done) {
-    request({uri: veranstaltungen_uri}, function (req, resp) {
+  es('enthält "Zukünftige Veranstaltungen" auf der Veranstaltungsseite', function (fertig) {
+    anfrage({uri: veranstaltungen_uri}, function (req, resp) {
       resp.body.should.contain('Zukünftige Veranstaltungen');
-      done();
+      fertig();
     });
   });
 
-  it('shows "Event X" for GET /events/X', function (done) {
-    request({uri: veranstaltungen_uri + '/X'}, function (req, resp) {
+  es('enthält "Veranstaltung X" für ein GET auf /events/X', function (fertig) {
+    anfrage({uri: veranstaltungen_uri + '/X'}, function (req, resp) {
       resp.body.should.contain('Veranstaltung X');
-      done();
+      fertig();
     });
   });
 
-  it('provides the style sheet', function (done) {
+  es('stellt das Stylesheet bereit', function (fertig) {
     var stylesheet_uri = basis_uri + '/stylesheets/style.css';
-    request({uri: stylesheet_uri}, function (req, resp) {
+    anfrage({uri: stylesheet_uri}, function (req, resp) {
       resp.statusCode.should.equal(200);
       resp.headers['content-type'].should.contain('text/css');
       resp.body.should.contain('color:');
-      done();
+      fertig();
     });
   });
 
-  it('shows the list of gruppen as retrieved by the SOAP call', function (done) {
+  es('zeigt die Liste der Gruppen an, so wie sie der SOAP Aufruf zurückliefert', function (fertig) {
     var gruppen_liste = [{id: 'gruppenId1', name: 'Gruppe 1'}];
     sympaClientStub.getGruppen = function (callback) {
       callback(null, gruppen_liste);
     };
-    request({uri: basis_uri + '/gruppen'}, function (req, resp) {
+    anfrage({uri: basis_uri + '/gruppen'}, function (req, resp) {
       resp.statusCode.should.equal(200);
       resp.body.should.contain('<a href="gruppen/gruppenId1">Gruppe 1</a>');
-      done();
+      fertig();
     });
   });
 });
