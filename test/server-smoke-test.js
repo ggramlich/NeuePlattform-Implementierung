@@ -31,9 +31,16 @@ describe('SWK Plattform server', function () {
     });
   });
 
-  it('should show "Upcoming events" on the event page', function (done) {
+  it('should show "Upcoming events" on the events page', function (done) {
     request({uri: events_uri}, function (req, resp) {
       resp.body.should.contain('Upcoming events');
+      done();
+    });
+  });
+
+  it('should show "The EVENT" and its id on the events/id page', function (done) {
+    request({uri: events_uri + '/42'}, function (req, resp) {
+      resp.body.should.contain('The EVENT id 42');
       done();
     });
   });
