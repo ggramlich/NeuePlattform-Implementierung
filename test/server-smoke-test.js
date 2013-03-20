@@ -6,8 +6,7 @@ var proxyquire =  require('proxyquire');
 var port = 17125;
 
 var sympaClientStub = {};
-var gruppenAppStub = proxyquire('../lib/gruppen', {'../gruppenverwaltung/swkSympaClient': sympaClientStub});
-var app = proxyquire('../app.js', {'./lib/gruppen': gruppenAppStub});
+var app = proxyquire('../app.js', {'./lib/gruppenverwaltung/swkSympaClient': sympaClientStub});
 
 var base_uri = "http://localhost:" + port;
 var events_uri = base_uri + '/events';

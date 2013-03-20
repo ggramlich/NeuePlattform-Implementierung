@@ -21,7 +21,9 @@ app.configure('development', function () {
 app.use('/', require('./lib/site'));
 app.use('/events', require('./lib/events'));
 app.use('/gruppenverwaltung', require('./lib/gruppenverwaltung'));
-var gruppenApp = require('./lib/gruppen');
+
+var sympaClient = require('./lib/gruppenverwaltung/swkSympaClient');
+var gruppenApp = require('./lib/gruppen')(sympaClient);
 /* This is needed in the gruppen.jade view, to produce reasonable hrefs */
 gruppenApp.locals({
   gruppen_route: 'gruppen'
