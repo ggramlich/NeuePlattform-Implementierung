@@ -11,7 +11,7 @@ var gruppenAnwendungStub = proxyquire('../lib/gruppen', {'../gruppenverwaltung/s
 var anwendung = proxyquire('../app.js', {'./lib/gruppen': gruppenAnwendungStub});
 
 var basis_uri = "http://localhost:" + port;
-var veranstaltungen_uri = basis_uri + '/events';
+var veranstaltungen_uri = basis_uri + '/veranstaltungen';
 
 beschreibe('SWK Plattform Server', function () {
   vorJedem(function (fertig) {
@@ -51,7 +51,7 @@ beschreibe('SWK Plattform Server', function () {
     });
   });
 
-  es('enthält "Veranstaltung X" für ein GET auf /events/X', function (fertig) {
+  es('enthält "Veranstaltung X" für ein GET auf /veranstaltungen/X', function (fertig) {
     anfrage({uri: veranstaltungen_uri + '/X'}, function (req, resp) {
       resp.body.should.contain('Veranstaltung X');
       fertig();

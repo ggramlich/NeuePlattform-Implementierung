@@ -18,8 +18,8 @@ app.configure('development', function () {
   app.use(express.errorHandler());
 });
 
-app.use('/', require('./lib/site'));
-app.use('/events', require('./lib/events'));
+app.use('/', require('./lib/startseite'));
+app.use('/veranstaltungen', require('./lib/veranstaltungen'));
 app.use('/gruppenverwaltung', require('./lib/gruppenverwaltung'));
 var gruppenApp = require('./lib/gruppen');
 /* This is needed in the gruppen.jade view, to produce reasonable hrefs */
