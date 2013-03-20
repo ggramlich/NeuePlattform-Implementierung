@@ -18,15 +18,14 @@
     "node": ">0.8"
   },
   "dependencies": {
-      "express": "~3.1",
-      "soap": "0.2.7"
-
+    "express": "~3.1",
+    "soap": "0.2.7"
   },
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-jshint": "~0.2",
     "grunt-contrib-watch": "~0.3.1",
-    "grunt-simple-mocha": "~0.3.2",
+    "grunt-mocha-hack": "0.0.4",
     "chai": "~1.5.0",
     "request": "~2.16.6"
   },
