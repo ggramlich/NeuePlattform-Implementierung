@@ -15,12 +15,5 @@
   "strict": true,
   "indent": 2,
   "white": true,
-  "trailing": true,
-  "globals": {
-    "describe": true,
-    "expect": true,
-    "it": true,
-    "beforeEach": true,
-    "afterEach": true
-  }
+  "trailing": true
 }
